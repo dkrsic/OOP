@@ -1,31 +1,50 @@
 #include <iostream>
-#include<vector>
-#include<algorithm>
-#include<string>
+#include <string>
+#include "Spil.h"
+#include "Igrac.h"
 
-using namespace std;
+int main(){
+	// špil je izmiješan
+	Spil Djelitelj(true); 
+	vector<Igrac> igrac;
+	int n;
 
-class Igrac {
-public:
-    string ime;
-    vector<int>Karta;
-    Igrac(string _ime);
-};
+	//kreiraj sve igrače
+	cout << "Unesi broj igraca: ";
+	cin >> n;
+	if(n > 13){
+		cout << "Broj igraca je prevelik!";
+		return -1;
+	}
+	for(int i = 0; i < n; i++){
+		string Ime;
+		cout << "Unesi ime " << i+1 << ".igraca: ";
+		cin >> Ime;
+		igrac.push_back(Igrac(Ime));
+	}
 
+	// ispis svih karata u špilu
+	cout << "\nKarte u spilu (" << Djelitelj.Karta.size() << "):\n";
+	for(int i = 0; i < 52; i++)
+		cout << Djelitelj.Karta[i] << "\t";
+	cout << "\n\n";
 
-int main()
-{
-    int N;
-    vector<Igrac>igrac;
-    cout << "Unesi broj igraca:";
-    cin >> N;
+	//podijeli karte svim igračima
+	for(int i = 0; i < igrac.size(); i++){
+		Djelitelj.PodijeliKarte(&igrac[i]);
 
-    for (int i = 0; i < N; ++i) {
-        string ime;
-        cout << "Unesi ime" << i+1 << ".igraca:";
-        cin >> ime;
-        igrac.push_back(Igrac(ime));
-    }
+		//ispis podijeljenjih karti 
+		cout << igrac[i].Ime << " je dobio sljedece karte:\t";
+		for(int j = 0; j < igrac[i].Karta.size(); j++)
+			cout << igrac[i].Karta[j] << "\t";
+		cout << endl;
+	}
+	cout << "\n\n";
+	
+	// ispis karata koji su ostali u špilu
+	cout << "Preostale karte u spilu (" << Djelitelj.Karta.size() << "):\n";
+	for(int i = 0; i < Djelitelj.Karta.size(); i++)
+		cout << Djelitelj.Karta[i] << "\t";
 
-    
+	return 0;
 }
